@@ -3,97 +3,531 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Одностраничный лендинг</title>
-  <meta name="description" content="Короткое описание проекта/услуги." />
+  <title>Название компании — Девиз</title>
+  <meta name="description" content="Коротко: чем занимается компания, для кого и какой результат." />
+
+  <!-- OpenGraph для красивого превью в Telegram/соцсетях -->
+  <meta property="og:title" content="Название компании — Девиз" />
+  <meta property="og:description" content="Коротко: чем занимается компания, для кого и какой результат." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1523966211575-eb4a01e7dd51?auto=format&fit=crop&w=1200&q=70" />
+  <meta property="og:type" content="website" />
 
   <style>
-    :root{--bg:#0b1220;--card:#111b2e;--text:#eaf0ff;--muted:#9fb0d0;--acc:#6aa7ff;}
+    :root{
+      --bg:#070B14;
+      --panel:#0B1222;
+      --panel2:#0E1730;
+      --text:#EAF0FF;
+      --muted:#A9B6D6;
+      --border:rgba(255,255,255,.12);
+      --accent:#6AA7FF;
+      --accent2:#9B7BFF;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 26px;
+    }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:radial-gradient(1200px 600px at 20% 0%,#14224a 0%,transparent 60%),var(--bg);color:var(--text)}
-    a{color:inherit}
-    .wrap{max-width:980px;margin:0 auto;padding:28px}
-    .nav{display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .logo{font-weight:800;letter-spacing:.4px}
-    .btn{display:inline-block;padding:10px 14px;border-radius:12px;background:var(--acc);color:#061027;text-decoration:none;font-weight:700}
-    .ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--text)}
-    .hero{margin-top:36px;display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center}
-    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:20px}
-    h1{margin:0 0 10px;font-size:38px;line-height:1.1}
-    p{margin:0 0 14px;color:var(--muted);line-height:1.5}
-    .bullets{display:grid;gap:10px;margin-top:14px}
-    .bullet{display:flex;gap:10px}
-    .dot{width:10px;height:10px;border-radius:50%;background:var(--acc);margin-top:7px;flex:0 0 auto}
-    .grid{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .small h3{margin:0 0 6px;font-size:16px}
-    .small p{margin:0;color:var(--muted);font-size:14px}
-    .cta{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
-    .footer{margin-top:34px;color:rgba(255,255,255,.55);font-size:13px}
-    @media (max-width:820px){.hero{grid-template-columns:1fr} h1{font-size:32px} .grid{grid-template-columns:1fr}}
-    input, textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.25);color:var(--text)}
-    label{display:block;margin:10px 0 6px;color:rgba(255,255,255,.75);font-size:13px}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 15% 0%, rgba(106,167,255,.25), transparent 60%),
+        radial-gradient(900px 520px at 90% 20%, rgba(155,123,255,.18), transparent 60%),
+        var(--bg);
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px);
+      background: rgba(7,11,20,.55);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:14px 24px;
+      max-width:1100px;margin:0 auto;
+    }
+    .brand{display:flex;align-items:center;gap:10px;min-width:220px}
+    .logo{
+      width:34px;height:34px;border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 28px rgba(106,167,255,.18);
+    }
+    .brand b{letter-spacing:.3px}
+    .menu{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+    .pill{
+      padding:9px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.9);
+      font-size:14px;
+    }
+    .pill:hover{border-color:rgba(255,255,255,.25)}
+    .cta{
+      display:flex;gap:10px;align-items:center;justify-content:flex-end;
+      min-width:220px;
+    }
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 14px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      font-weight:700;
+      font-size:14px;
+    }
+    .btn.primary{
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:#081024;
+      box-shadow: 0 16px 40px rgba(106,167,255,.18);
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .hero{
+      padding:34px 0 18px;
+      display:grid;grid-template-columns: 1.2fr .8fr;gap:18px;align-items:stretch;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+    }
+    .hero-left{padding:22px}
+    h1{
+      margin:0 0 10px;
+      font-size: 40px; line-height:1.06;
+      letter-spacing:-.4px;
+    }
+    .subtitle{color:var(--muted);line-height:1.5;margin:0 0 14px}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+    .kpi{padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,.10);background: rgba(0,0,0,.18)}
+    .kpi b{display:block;font-size:18px}
+    .kpi span{color:var(--muted);font-size:13px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .hero-right{padding:12px}
+    .media{
+      border-radius: 22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+    }
+    .media img{aspect-ratio: 16/10; object-fit: cover}
+    .badge-row{display:flex;gap:8px;flex-wrap:wrap;padding:12px}
+    .badge{
+      font-size:12px;color:rgba(255,255,255,.85);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      padding:6px 10px;border-radius:999px;
+    }
+
+    section{padding:14px 0}
+    .section-head{
+      display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
+      margin:10px 0 12px;
+    }
+    .section-head h2{margin:0;font-size:22px}
+    .section-head p{margin:0;color:var(--muted);max-width:680px;line-height:1.4}
+    .grid{
+      display:grid;gap:12px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .item{
+      padding:14px;
+      border-radius: var(--radius);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+    }
+    .item h3{margin:10px 0 6px;font-size:16px}
+    .item p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+    .thumb{
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+    }
+    .thumb img{aspect-ratio: 16/10; object-fit: cover}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .tag{font-size:12px;color:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:999px;background: rgba(255,255,255,.02)}
+    .two-col{display:grid;grid-template-columns: 1fr 1fr; gap:12px}
+    .about{padding:18px}
+    .about h3{margin:0 0 8px}
+    .about p{margin:0;color:var(--muted);line-height:1.55}
+    .list{margin-top:12px;display:grid;gap:10px}
+    .li{display:flex;gap:10px;align-items:flex-start}
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      margin-top:7px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex:0 0 auto;
+    }
+
+    .video-wrap{
+      border-radius: 22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      aspect-ratio: 16/9;
+    }
+    .video-wrap iframe, .video-wrap video{
+      width:100%;height:100%;border:0;display:block;
+    }
+
+    .contact{
+      padding:18px;
+      display:grid;grid-template-columns: 1.1fr .9fr;gap:12px;
+    }
+    .contact p{margin:0 0 10px;color:var(--muted);line-height:1.5}
+    .contact-cards{display:grid;gap:10px}
+    .contact-card{
+      padding:12px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+    }
+    .contact-card b{display:block}
+    .contact-card a{color:rgba(255,255,255,.92);text-decoration:underline;text-decoration-color:rgba(255,255,255,.25)}
+    .footer{
+      padding:18px 0 26px;
+      color: rgba(255,255,255,.55);
+      font-size:13px;
+      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      border-top:1px solid rgba(255,255,255,.08);
+      margin-top:16px;
+    }
+
+    /* Мобилка */
+    @media (max-width: 980px){
+      .hero{grid-template-columns: 1fr}
+      .kpis{grid-template-columns: 1fr}
+      .grid{grid-template-columns: 1fr}
+      .two-col{grid-template-columns: 1fr}
+      .contact{grid-template-columns: 1fr}
+      h1{font-size:34px}
+      .brand,.cta{min-width:auto}
+      .menu{display:none} /* если хотите — можно убрать и оставить меню всегда */
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <!-- Верхняя панель -->
+  <div class="topbar">
     <div class="nav">
-      <div class="logo">Название / Лого</div>
-      <a class="btn ghost" href="#contact">Контакты</a>
-    </div>
-
-    <section class="hero">
-      <div class="card">
-        <h1>Короткий заголовок про ценность</h1>
-        <p>1–2 предложения: что вы делаете и для кого. Без воды, максимально понятно.</p>
-
-        <div class="bullets">
-          <div class="bullet"><div class="dot"></div><div>Преимущество №1 (конкретно)</div></div>
-          <div class="bullet"><div class="dot"></div><div>Преимущество №2 (с цифрой/сроком)</div></div>
-          <div class="bullet"><div class="dot"></div><div>Преимущество №3 (что получит человек)</div></div>
-        </div>
-
-        <div class="cta">
-          <a class="btn" href="#contact">Оставить заявку</a>
-          <a class="btn ghost" href="#details">Подробнее</a>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <b id="companyName">Название компании</b><br/>
+          <span style="color:rgba(255,255,255,.65);font-size:12px" id="companyTag">Технологии • Инженерия • Прототипы</span>
         </div>
       </div>
 
-      <div class="card" id="details">
-        <h2 style="margin:0 0 10px;font-size:20px;">Кому подходит</h2>
-        <p>Опиши 2–3 типичных случая/клиента.</p>
-
-        <div class="grid">
-          <div class="card small">
-            <h3>Скорость</h3>
-            <p>Например: результат за 48 часов.</p>
-          </div>
-          <div class="card small">
-            <h3>Качество</h3>
-            <p>Например: примеры работ / портфолио.</p>
-          </div>
-          <div class="card small">
-            <h3>Поддержка</h3>
-            <p>Например: 7 дней правок.</p>
-          </div>
-        </div>
+      <div class="menu" aria-label="Навигация">
+        <a class="pill" href="#projects">Проекты</a>
+        <a class="pill" href="#services">Услуги</a>
+        <a class="pill" href="#about">О компании</a>
+        <a class="pill" href="#media">Видео</a>
+        <a class="pill" href="#contacts">Контакты</a>
       </div>
-    </section>
-
-    <section class="card" id="contact" style="margin-top:18px">
-      <h2 style="margin:0 0 8px;font-size:20px;">Связаться</h2>
-      <p>Самый дешёвый вариант — просто кнопки на Telegram/почту. Форма ниже без сервера не отправит — оставь контакты или подключи Formspree.</p>
 
       <div class="cta">
-        <a class="btn" href="https://t.me/USERNAME" target="_blank" rel="noopener">Написать в Telegram</a>
-        <a class="btn ghost" href="mailto:you@email.com">Написать на почту</a>
+        <a class="btn" id="tgTop" href="https://t.me/USERNAME" target="_blank" rel="noopener">Telegram</a>
+        <a class="btn primary" href="#contacts">Оставить заявку</a>
       </div>
-
-      <div class="footer">© <span id="y"></span> Ваше имя. Все права защищены.</div>
-    </section>
+    </div>
   </div>
 
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="card hero-left">
+        <h1 id="slogan">Делаем продуктовые прототипы и внедряем решения под ключ</h1>
+        <p class="subtitle" id="desc">
+          Коротко и понятно: чем вы занимаетесь, кому помогаете и какой результат получает клиент.
+          Например: «От идеи до работающего прототипа за 2–6 недель».
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#projects">Смотреть проекты</a>
+          <a class="btn" href="#services">Наши услуги</a>
+          <a class="btn" id="emailTop" href="mailto:you@email.com">Почта</a>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi"><b id="kpi1">10+</b><span>проектов в портфолио</span></div>
+          <div class="kpi"><b id="kpi2">2–6</b><span>недель до MVP</span></div>
+          <div class="kpi"><b id="kpi3">24/7</b><span>поддержка и доработки</span></div>
+        </div>
+      </div>
+
+      <div class="card hero-right">
+        <div class="media">
+          <!-- Замените картинку на свою: можно локальный файл (assets/hero.jpg) -->
+          <img src="https://images.unsplash.com/photo-1523966211575-eb4a01e7dd51?auto=format&fit=crop&w=1400&q=70"
+               alt="Фото/рендер проекта" />
+          <div class="badge-row">
+            <span class="badge">R&D</span>
+            <span class="badge">Дизайн</span>
+            <span class="badge">Разработка</span>
+            <span class="badge">Интеграция</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПРОЕКТЫ -->
+    <section id="projects">
+      <div class="section-head">
+        <div>
+          <h2>Проекты</h2>
+          <p>3–6 лучших кейсов. Суть + результат + технологии. Можно добавить ссылку на демо/видео/репозиторий.</p>
+        </div>
+        <a class="btn" href="#contacts">Хочу такой проект</a>
+      </div>
+
+      <div class="grid">
+        <div class="item card">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1400&q=70" alt="Проект 1"/>
+          </div>
+          <h3>Проект №1 — Название</h3>
+          <p>1–2 предложения: что сделали и какой результат. Например: «Автоматизация контроля качества, -35% брака».</p>
+          <div class="tags">
+            <span class="tag">Computer Vision</span><span class="tag">MVP</span><span class="tag">Edge</span>
+          </div>
+        </div>
+
+        <div class="item card">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=1400&q=70" alt="Проект 2"/>
+          </div>
+          <h3>Проект №2 — Название</h3>
+          <p>Например: «Система мониторинга в реальном времени + панель аналитики для команды».</p>
+          <div class="tags">
+            <span class="tag">Dashboard</span><span class="tag">API</span><span class="tag">Analytics</span>
+          </div>
+        </div>
+
+        <div class="item card">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1400&q=70" alt="Проект 3"/>
+          </div>
+          <h3>Проект №3 — Название</h3>
+          <p>Например: «Интеграция оборудования + ПО: сбор данных, тревоги, отчёты».</p>
+          <div class="tags">
+            <span class="tag">IoT</span><span class="tag">Automation</span><span class="tag">Integration</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- УСЛУГИ -->
+    <section id="services">
+      <div class="section-head">
+        <div>
+          <h2>Услуги</h2>
+          <p>Сформулируйте «что делаем» в 4–6 пунктах. Чем конкретнее — тем лучше.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="item card">
+          <h3>Разработка MVP</h3>
+          <p>Прототип за ограниченный срок: постановка задачи → дизайн → разработка → тестирование.</p>
+        </div>
+        <div class="item card">
+          <h3>Инженерные прототипы</h3>
+          <p>Устройства/стенды/интеграции. Подбор компонентов, сборка, наладка, документация.</p>
+        </div>
+        <div class="item card">
+          <h3>Компьютерное зрение</h3>
+          <p>Детекция/трекинг/аналитика. Оптимизация под edge, подготовка датасета, метрики.</p>
+        </div>
+        <div class="item card">
+          <h3>Автоматизация процессов</h3>
+          <p>Сбор данных, контроль, уведомления, отчёты. Интеграция с датчиками и системами.</p>
+        </div>
+        <div class="item card">
+          <h3>Техконсалтинг</h3>
+          <p>Аудит идеи/продукта, план работ, оценка рисков, выбор технологий и архитектуры.</p>
+        </div>
+        <div class="item card">
+          <h3>Поддержка и развитие</h3>
+          <p>Доработки, масштабирование, сопровождение, SLA по договорённости.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- О КОМПАНИИ + БЛОК С ФОТО -->
+    <section id="about">
+      <div class="two-col">
+        <div class="card about">
+          <div class="section-head" style="margin:0 0 10px">
+            <h2 style="margin:0">О компании</h2>
+          </div>
+          <p>
+            4–6 строк: кто вы, чем сильны, что отличает. Можно указать «команда из N человек»,
+            опыт, подход, отрасли. Держите текст конкретным.
+          </p>
+          <div class="list">
+            <div class="li"><span class="dot"></span><div><b>Фокус на результате</b><div style="color:var(--muted)">Делаем так, чтобы решение работало в реальности, а не только «на бумаге».</div></div></div>
+            <div class="li"><span class="dot"></span><div><b>Прозрачная работа</b><div style="color:var(--muted)">План, этапы, демонстрации, понятная коммуникация.</div></div></div>
+            <div class="li"><span class="dot"></span><div><b>Технологичность</b><div style="color:var(--muted)">Современный стек, документация, возможность развития продукта.</div></div></div>
+          </div>
+        </div>
+
+        <div class="card about">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=70"
+                 alt="Команда/офис/лаборатория"/>
+          </div>
+          <h3 style="margin:12px 0 8px">Как мы работаем</h3>
+          <p>
+            1) Быстро уточняем задачу → 2) предлагаем план и оценку → 3) делаем прототип → 4) внедряем и поддерживаем.
+          </p>
+          <div class="tags" style="margin-top:12px">
+            <span class="tag">Discovery</span><span class="tag">Prototype</span><span class="tag">Delivery</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ВИДЕО -->
+    <section id="media">
+      <div class="section-head">
+        <div>
+          <h2>Видео / демо</h2>
+          <p>Можно вставить YouTube (самый простой путь) или загрузить mp4 рядом с html.</p>
+        </div>
+      </div>
+
+      <!-- Вариант A: YouTube -->
+      <div class="card" style="padding:12px">
+        <div class="video-wrap" aria-label="Видео демо (YouTube)">
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="Demo video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p style="margin:10px 6px 2px;color:var(--muted);font-size:13px">
+          Чтобы заменить: вставьте ссылку на своё видео в формате <b>https://www.youtube.com/embed/ID</b>
+        </p>
+      </div>
+
+      <!-- Вариант B: локальный mp4 (если хотите без YouTube) -->
+      <!--
+      <div class="card" style="padding:12px;margin-top:12px">
+        <div class="video-wrap" aria-label="Видео демо (mp4)">
+          <video controls playsinline preload="metadata">
+            <source src="assets/demo.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
+        </div>
+        <p style="margin:10px 6px 2px;color:var(--muted);font-size:13px">
+          Положите файл по пути <b>assets/demo.mp4</b> и загрузите папку на Netlify.
+        </p>
+      </div>
+      -->
+    </section>
+
+    <!-- КОНТАКТЫ -->
+    <section id="contacts">
+      <div class="section-head">
+        <div>
+          <h2>Контакты</h2>
+          <p>Сделаем быстро: кнопки на мессенджеры и почту. Если нужна форма — скажите, добавлю.</p>
+        </div>
+      </div>
+
+      <div class="card contact">
+        <div>
+          <h3 style="margin:0 0 8px">Напишите нам</h3>
+          <p>Опишите задачу в 2–3 предложениях: что нужно сделать, сроки, желаемый результат. Ответим и предложим план.</p>
+
+          <div class="hero-actions">
+            <a class="btn primary" id="tgMain" href="https://t.me/USERNAME" target="_blank" rel="noopener">Telegram</a>
+            <a class="btn" id="waMain" href="https://wa.me/0000000000" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn" id="mailMain" href="mailto:you@email.com">Email</a>
+            <a class="btn" id="callMain" href="tel:+70000000000">Позвонить</a>
+          </div>
+
+          <div class="tags" style="margin-top:12px">
+            <span class="tag">Ответ в течение дня</span>
+            <span class="tag">Понятная оценка</span>
+            <span class="tag">Договорённости письменно</span>
+          </div>
+        </div>
+
+        <div class="contact-cards">
+          <div class="contact-card">
+            <b>Telegram</b>
+            <div><a href="https://t.me/USERNAME" target="_blank" rel="noopener">@USERNAME</a></div>
+          </div>
+          <div class="contact-card">
+            <b>Email</b>
+            <div><a href="mailto:you@email.com">you@email.com</a></div>
+          </div>
+          <div class="contact-card">
+            <b>Телефон</b>
+            <div><a href="tel:+70000000000">+7 (000) 000-00-00</a></div>
+          </div>
+          <div class="contact-card">
+            <b>Соцсети</b>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+              <a class="pill" href="#" target="_blank" rel="noopener">VK</a>
+              <a class="pill" href="#" target="_blank" rel="noopener">YouTube</a>
+              <a class="pill" href="#" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>© <span id="y"></span> <span id="companyName2">Название компании</span>. Все права защищены.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="pill" href="#top">Наверх</a>
+          <a class="pill" href="#projects">Проекты</a>
+          <a class="pill" href="#services">Услуги</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <script>
+    // Год в футере
     document.getElementById("y").textContent = new Date().getFullYear();
+
+    // Быстрая настройка в одном месте:
+    const cfg = {
+      company: "Название компании",
+      tag: "Технологии • Инженерия • Прототипы",
+      slogan: "Делаем продуктовые прототипы и внедряем решения под ключ",
+      description: "Коротко и понятно: чем вы занимаетесь, кому помогаете и какой результат получает клиент.",
+      telegram: "https://t.me/USERNAME",
+      whatsapp: "https://wa.me/0000000000",
+      email: "you@email.com",
+      phone: "+70000000000"
+    };
+
+    // Проставляем значения
+    document.getElementById("companyName").textContent = cfg.company;
+    document.getElementById("companyName2").textContent = cfg.company;
+    document.getElementById("companyTag").textContent = cfg.tag;
+    document.getElementById("slogan").textContent = cfg.slogan;
+    document.getElementById("desc").textContent = cfg.description;
+
+    // Ссылки
+    const tgLinks = ["tgTop","tgMain"].map(id => document.getElementById(id)).filter(Boolean);
+    tgLinks.forEach(a => a.href = cfg.telegram);
+
+    document.getElementById("waMain").href = cfg.whatsapp;
+    document.getElementById("emailTop").href = "mailto:" + cfg.email;
+    document.getElementById("mailMain").href = "mailto:" + cfg.email;
+    document.getElementById("callMain").href = "tel:" + cfg.phone;
   </script>
 </body>
 </html>
